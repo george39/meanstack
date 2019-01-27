@@ -6,9 +6,13 @@ var bcrypt = require('bcrypt-nodejs');
 // cargar modelos
 var User = require('../models/user');
 
+//servicio jwt
+var jwt = require('../services/jwt');
+
 function pruebas(request, response){
 	response.status(200).send({
-		message: 'Probando el controlador de usuarios'
+		message: 'Probando el controlador de usuarios',
+		user: request.user
 	});
 }
 
@@ -82,7 +86,17 @@ function login(request, response){
 				if (user) {
 					bcrypt.compare(password, user.password, (error, check) => {
 						if (check) {
-							response.status(200).send({user})
+
+							//comprobar y generar el token
+							if (params.gettoken) {
+								//devolver token fwt
+								response.status(200).send({
+									token: jwt.createToken(user)
+								});
+							}else{
+								response.status(200).send({user})
+							}
+							
 						}else{
 							response.status(404).send({
 								message: 'El usuario no ha podido loguearse correctamente'
@@ -99,8 +113,58 @@ function login(request, response){
 	});
 }
 
+//Metodo para actualizar un usuario
+function updateUser(request, response){
+	var userId = request.params.id;
+	var update = request.body;
+
+	if (userId != request.user.sub) {
+		return response.status(500).send({
+			message: 'No tienes permiso para actualizar el usuario'
+		});
+	}
+
+	User.findByIdAndUpdate(userId, update, {new:true}, (error, userUpdated) => {
+		if (error) {
+			response.status(500).send({
+				message: 'Error al actualizar el usuario'
+			});
+		}else{
+			if (!userUpdated) {
+				response.status(404).send({
+					message: 'No se ha podido actualizar el usuario'
+				});
+			}else{
+				response.status(200).send({user: userUpdated});
+			}
+		}
+	});	
+}
+
+//Metodo para listar los usuarios con role user
+function getAdmins(request, response){
+	User.find({role: 'ROLE_ADMIN'}).exec((error, users) => {
+		if (error) {
+			response.status(500).send({
+				message: 'Error en la peticion'
+			});
+		}else{
+			if (!users) {
+				response.status(404).send({
+					message: 'No hay administradores'
+				});
+			}else{
+				response.status(200).send({users});
+			}
+		}
+	});
+	
+}
+
 module.exports = {
 	pruebas,
 	saveUser,
-	login
+	login,
+	updateUser,
+	getAdmins
 };
