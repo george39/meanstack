@@ -4,11 +4,12 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var ViradoSchema = Schema ({
+	operator: String,
 	name: String,
 	size: String,
 	quantity: String,
 	reference: String,
-	date: String,
+	date: {type: Date, default: Date.now()},
 	homework: { type: Schema.ObjectId, ref: 'Homework'},
 	user_id: { type: Schema.ObjectId, ref: 'User'}
 });

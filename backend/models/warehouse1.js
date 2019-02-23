@@ -4,10 +4,11 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var Warehouse1Schema = Schema ({
+	operator: String,
 	name: String,
 	size: String,
 	reference: String,
-	date: String,
+	date: {type: Date, default: Date.now()},
 	clasification: String,
 	user_id: { type: Schema.ObjectId, ref: 'User'}
 });

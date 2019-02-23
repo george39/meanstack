@@ -1,0 +1,72 @@
+<!-- 
+<div class="top" >
+
+	<h1 align="center">{{title}}</h1>
+
+	<hr>
+	
+	<div class="row" >		
+		<div class="col-lg-6 inner-addon right-addon" >
+			<i class="glyphicon glyphicon-barcode" ></i>			
+			<input align="center" type="text" class="form-control"  [(ngModel)]="my_register" (keyup.enter)="getWarehouses1()" placeholder="Lea o ingrese el código de barras" >
+
+			<button (click)="addRegister()">Añadir</button>	
+			<ul>
+			<li *ngFor="let registro of [warehouse1] | barcode: my_register; let indice = index ">
+				{{indice + 1 +' ' + registro }}
+				<button (click)="deleteRegister(indice)">Eliminar</button>
+			</li>
+		</ul>		
+		</div>
+		<strong>{{my_register}}</strong>				
+	</div>
+</div>
+-->
+
+
+
+<div class="top container col-lg-8" *ngIf="warehouse1">
+	<h1 align="center">{{title}}</h1>
+	<div class="message success" *ngIf="status == 'success'">
+		El proyecto se ha creado correctamente, puedes
+	</div>
+<form #formAddWarehouse1="ngForm" (ngSubmit)="onSubmit(formAddWarehouse1)">	
+	<p>
+		<label>Operario</label>
+		<input type="text" name="operator" #operator="ngModel" [(ngModel)]="warehouse1.operator" class="form-control" required>
+		<span *ngIf="!operator.valid && operator.touched">
+			El nombre del operario es obligatorio
+		</span>
+	</p>
+	<p>
+		<label>Nombre tarea</label>
+		<input type="text" name="name" #name="ngModel" [(ngModel)]="warehouse1.name" class="form-control" required>
+		<span *ngIf="!name.valid && name.touched">
+			El nombre de la tarea es obligatorio
+		</span>
+	</p>
+	<p>
+		<label>Código referencia</label>
+		<input type="text" name="reference" #reference="ngModel" [(ngModel)]="warehouse1.reference" class="form-control" required>
+		<span *ngIf="!reference.valid && reference.touched">
+			La referencia es obligatoria
+		</span>
+	</p>
+	<p>
+		<label>Talla</label>
+		<input type="text" name="size" #size="ngModel" [(ngModel)]="warehouse1.size" class="form-control" required>
+		<span *ngIf="!size.valid && size.touched">
+			La referencia es obligatoria
+		</span>
+	</p>
+	<p>
+		<label>Clsificacion</label>
+		<input type="text"  name="clasification" #clasifications="ngModel" [(ngModel)]="warehouse1.clasifications" class="form-control" required>
+		<span *ngIf="!clasifications.valid && clasifications.touched">
+			La cantidad es obligatoria
+		</span>
+	</p>
+		
+	<input type="submit" value="{{title}}" class="btn btn-success">
+</form>
+</div>

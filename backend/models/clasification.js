@@ -4,8 +4,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var ClasificationSchema = Schema ({
-	primera: String,
-	segunda: String
+	name: String
 });
 
-module.exports = mongoose.model('Clasifications', ClasificationSchema);
+module.exports = mongoose.model('Clasification', ClasificationSchema);

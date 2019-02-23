@@ -117,6 +117,7 @@ function login(request, response){
 function updateUser(request, response){
 	var userId = request.params.id;
 	var update = request.body;
+	delete update.password;
 
 	if (userId != request.user.sub) {
 		return response.status(500).send({
@@ -141,9 +142,29 @@ function updateUser(request, response){
 	});	
 }
 
-//Metodo para listar los usuarios con role user
+//Metodo para listar los usuarios con role admin
 function getAdmins(request, response){
 	User.find({role: 'ROLE_ADMIN'}).exec((error, users) => {
+		if (error) {
+			response.status(500).send({
+				message: 'Error en la peticion'
+			});
+		}else{
+			if (!users) {
+				response.status(404).send({
+					message: 'No hay administradores'
+				});
+			}else{
+				response.status(200).send({users});
+			}
+		}
+	});
+	
+}
+
+//Metodo para listar los usuarios con role user
+function getAlmacen1(request, response){
+	User.find({role: 'ROLE_ALMACEN1'}).exec((error, users) => {
 		if (error) {
 			response.status(500).send({
 				message: 'Error en la peticion'
@@ -166,5 +187,6 @@ module.exports = {
 	saveUser,
 	login,
 	updateUser,
-	getAdmins
+	getAdmins,
+	getAlmacen1
 };
