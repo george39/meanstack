@@ -120,25 +120,20 @@ function updateWarehouses1(request, response) {
                 mensaje: 'Error al buscar usuario',
                 errors: err
             });
+        } else {
+            if (!warehouse1) {
+                return response.status(404).json({
+                    ok: false,
+                    mensaje: "el codigo no existe"
+                });
+            } else {
+
+                response.status(200).json({
+                    ok: true,
+                    warehouse: warehouse1
+                });
+            }
         }
-
-
-
-        if (err) {
-            return response.status(500).json({
-                ok: false,
-                mensaje: 'Error al buscar usuario',
-                errors: err
-            });
-        }
-
-        response.status(200).json({
-            ok: true,
-            warehouse1: warehouse1
-        });
-
-
-
 
     });
 
