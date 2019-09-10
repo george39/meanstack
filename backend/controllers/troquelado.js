@@ -41,6 +41,30 @@ function saveTroquelado(request, response) {
     }
 }
 
+function deleteTroquelado(request, response) {
+    var troqueladoId = request.params.id;
+
+    Troquelado.findByIdAndRemove(troqueladoId, (error, troqueladoRemoved) => {
+        if (error) {
+            response.status(500).send({
+                message: 'Error en la peticion'
+            });
+        } else {
+            if (!troqueladoRemoved) {
+                response.status(404).send({
+                    message: 'La tarea no existe'
+                });
+            } else {
+                response.status(200).send({
+                    troquelado: troqueladoRemoved
+                });
+            }
+        }
+
+    });
+}
+
 module.exports = {
-    saveTroquelado
+    saveTroquelado,
+    deleteTroquelado
 }

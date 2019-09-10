@@ -4,6 +4,7 @@
 //acciones
 var express = require('express');
 var Warehouse1Controller = require('../controllers/warehouse1');
+var TroqueladoController = require('../controllers/troquelado');
 
 var api = express.Router();
 var md_auth = require('../middlewares/authenticated');
@@ -16,6 +17,7 @@ api.post('/warehouse1', md_auth.ensureAuth, Warehouse1Controller.saveWarehouse1)
 api.post('/add-register', [md_auth.ensureAuth, md_register.Almacen1], Warehouse1Controller.saveWarehouse1);
 api.get('/getwarehouses1', Warehouse1Controller.getWarehouses1);
 api.put('/updatewarehouse1', Warehouse1Controller.updateWarehouses1);
+
 
 
 module.exports = api;

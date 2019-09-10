@@ -108,11 +108,16 @@ function updateWarehouses1(request, response) {
 
     var warehouse1Id = request.params.id;
     var war = request.params;
+    var update = request.body._id;
     var codigo = request.body.code;
     var idWarehouse = request.body.id;
 
 
-    Warehouse1.findByIdAndUpdate(idWarehouse, { "$pull": { "registros": { "code": codigo } } }, { safe: true, multi: true }, (err, warehouse1) => {
+    console.log(update);
+
+
+
+    Warehouse1.findByIdAndUpdate(update, { "$pull": { "registros": { "code": codigo } } }, { safe: true, multi: true }, (err, warehouse1) => {
 
         if (err) {
             return response.status(500).json({

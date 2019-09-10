@@ -8,6 +8,6 @@ var md_auth = require('../middlewares/authenticated');
 
 api.post('/tareaunidad', md_auth.ensureAuth, TareaUnidadController.saveTareaUnidad);
 api.get('/gethomeworkunit', TareaUnidadController.getHomeworkUnit);
-api.delete('/deletehomeworkunit/:id', md_auth.ensureAuth, TareaUnidadController.deleteTareaUnidad);
+api.delete('/deletehomeworkunit/:id', TareaUnidadController.deleteTareaUnidad);
 
 module.exports = api;
