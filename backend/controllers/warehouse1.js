@@ -141,10 +141,13 @@ function updateWarehouses1(request, response) {
 
 
 function deleteWarehouse(request, response) {
-    var warehouse1Id = request.params.id;
-    var update = request.body._id;
+    var warehouse1Id = request.params;
+    var update = request.body;
+    // update = JSON.parse(update);
 
-    Warehouse1.findByIdAndRemove(update, (error, warehouse1Removed) => {
+
+    console.log(warehouse1Id);
+    Warehouse1.findOneAndRemove(update, (error, warehouse1Removed) => {
         if (error) {
             response.status(500).send({
                 message: 'Error en la peticion'
