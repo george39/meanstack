@@ -4,6 +4,7 @@
 var fs = require('fs');
 var path = require('path');
 
+
 var Warehouse1 = require('../models/warehouse1');
 
 function pruebas(request, response) {
@@ -112,6 +113,7 @@ function updateWarehouses1(request, response) {
     var codigo = request.body.code;
     var idWarehouse = request.body.id;
 
+
     Warehouse1.findByIdAndUpdate(update, { "$pull": { "registros": { "code": codigo } } }, { safe: true, multi: true }, (err, warehouse1) => {
 
         if (err) {
@@ -141,13 +143,9 @@ function updateWarehouses1(request, response) {
 
 
 function deleteWarehouse(request, response) {
-    var warehouse1Id = request.params;
-    var update = request.body;
-    // update = JSON.parse(update);
+    var warehouse1Id = request.params.id;
 
-
-    console.log(warehouse1Id);
-    Warehouse1.findOneAndRemove(update, (error, warehouse1Removed) => {
+    Warehouse1.findByIdAndRemove(warehouse1Id, (error, warehouse1Removed) => {
         if (error) {
             response.status(500).send({
                 message: 'Error en la peticion'
