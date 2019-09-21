@@ -7,5 +7,7 @@ var api = express.Router();
 var md_auth = require('../middlewares/authenticated');
 
 api.post('/guarnecida-interna', md_auth.ensureAuth, GuarnecidaInternaController.saveGuarnecidaInterna);
+api.put('/deleteitem', md_auth.ensureAuth, GuarnecidaInternaController.deleteItemGuarnecida);
+api.get('/getguarnecida', md_auth.ensureAuth, GuarnecidaInternaController.getGuarnecidas);
 
 module.exports = api;

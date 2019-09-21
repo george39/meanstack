@@ -16,9 +16,10 @@
     "express": "^4.16.4",
     "jwt-simple": "^0.5.5",
     "moment": "^2.24.0",
+    "mongodb-autoincrement": "^1.0.1",
     "mongoose": "^5.4.6",
     "mongoose-auto-increment": "^5.0.1",
-    "mongoose-sequence": "^5.0.1",
+    "mongoose-sequence": "^5.1.0",
     "sequelize": "^4.42.0"
   },
   "devDependencies": {

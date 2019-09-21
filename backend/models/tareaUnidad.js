@@ -3,15 +3,15 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var TerminacionSchema = Schema({
+var TareaUnidadSchema = Schema({
     operator: String,
-    clasification: String,
-    registros: { type: Array },
+    name: String,
+    reference: String,
+    size: String,
+    code: String,
     date: { type: Date, default: Date.now() },
-
     homework_id: { type: Schema.ObjectId, ref: 'Homework' },
     user_id: { type: Schema.ObjectId, ref: 'User' }
-
 });
 
-module.exports = mongoose.model('Terminacion', TerminacionSchema);
+module.exports = mongoose.model('TareaUnidad', TareaUnidadSchema);

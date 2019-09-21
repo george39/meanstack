@@ -5,42 +5,49 @@ var path = require('path');
 
 var Terminacion = require('../models/terminacion');
 
-function saveTerminacion(request, response){
-	var terminacion = new Terminacion();
-	var params = request.body;
+function saveTerminacion(request, response) {
+    var termination = new Terminacion();
+    var params = request.body;
+    var rg = params.registros;
 
-	if (params.name) {
-		terminacion.operator = params.operator;
-		terminacion.name = params.name;
-		terminacion.size = params.size;
-		terminacion.reference = params.reference;
-		terminacion.clasification = params.clasification;
-		terminacion.user_id = request.user.sub;
+    if (params.registros) {
 
-		terminacion.save((error, terminacionStored) => {
-			if (error) {
-				response.status(500).send({
-					message: 'Error en el servidor'
-				});
-			}else{
-				if (!terminacionStored) {
-					response.status(404).send({
-						message: 'No se han podido guardarr los datos'
-					});
-				}else{
-					response.status(200).send({
-						terminacion: terminacionStored
-					});
-				}
-			}
-		});
-	}else{
-		response.status(200).send({
-			message: 'El nombre es obligatorio'
-		});
-	}
+
+        termination.registros = params.registros;
+        termination.operator = params.operator;
+        termination.date = params.date;
+        termination.clasification = params.clasification;
+        // termination.user_id = request.user.sub;
+
+
+
+        termination.save((error, terminationStored) => {
+            if (error) {
+                response.status(500).send({
+                    message: 'Error en el servidor'
+                });
+            } else {
+                if (!terminationStored) {
+                    response.status(404).send({
+                        message: 'No se ha podido crear el registro'
+                    });
+                } else {
+                    response.status(200).send({
+                        Terminacion: terminationStored
+                    });
+                }
+            }
+        });
+
+
+
+    } else {
+        response.status(200).send({
+            message: 'El nombre es obligatorio'
+        });
+    }
 }
 
 module.exports = {
-	saveTerminacion
+    saveTerminacion
 }
