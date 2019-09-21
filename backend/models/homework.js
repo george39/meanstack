@@ -2,14 +2,27 @@
 
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var autoIncrement = require('mongoose-auto-increment');
+var mongoose = require('mongoose');
+var AutoIncrement = require('mongoose-sequence')(mongoose);
+
+var Sequelize = require('sequelize');
+
 
 var HomeworkSchema = Schema ({
+	_id: Number,	
+	operator: String,
+	//counter: {type: Number, autoIncrement: true},
 	name: String,
 	size: String,
-	quantity: String,
+	quantity: Number,
 	reference: String,
-	date: String,
-	user_id: { type: Schema.ObjectId, ref: 'User' }
+	date: {type: Date, default: Date.now()},
+	barcode: String,
+	objectId: String,
+	user_id: { type: Schema.ObjectId, ref: 'User' },
+	},{ _id: false 
 });
+HomeworkSchema.plugin(AutoIncrement);
 
 module.exports = mongoose.model('Homework', HomeworkSchema);
