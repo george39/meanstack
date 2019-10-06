@@ -8,6 +8,8 @@ var TareaUnidadSchema = Schema({
     name: String,
     reference: String,
     size: String,
+    treintayocho: Number,
+    treintaynueve: Number,
     code: String,
     date: { type: Date, default: Date.now() },
     homework_id: { type: Schema.ObjectId, ref: 'Homework' },

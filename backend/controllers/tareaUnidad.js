@@ -13,10 +13,10 @@ function saveTareaUnidad(request, response) {
 
 
     if (params.name) {
-        tareau.operator = params.opereator;
+        tareau.operator = params.operator;
         tareau.name = params.name;
         tareau.reference = params.reference;
-        tareau.size = params.size;
+        tareau.size = params.size;        
         tareau.code = params.code;
         tareau.user_id = request.user.sub;
 

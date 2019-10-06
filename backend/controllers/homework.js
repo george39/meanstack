@@ -20,11 +20,24 @@ function saveHomework(request, response) {
 
     if (params.name) {
         homework.operator = params.operator;
-        homework.name = params.name;
-        homework.size = params.size;
+        homework.name = params.name;        
         homework.reference = params.reference;
         //homework.date = moment().unix();
-        homework.quantity = params.quantity;
+        homework.treintaytres = params.treintaytres;
+        homework.treintaycuatro = params.treintaycuatro;
+        homework.treintaycinco = params.treintaycinco;
+        homework.treintayseis = params.treintayseis;
+        homework.treintaysiete = params.treintaysiete;
+        homework.treintayocho = params.treintayocho;
+        homework.treintaynueve = params.treintaynueve;
+        homework.cuarenta = params.cuarenta;
+        homework.cuarentayuno = params.cuarentayuno;
+        homework.cuarentaydos = params.cuarentaydos;
+        homework.cuarentaytres = params.cuarentaytres;
+        homework.cuarentaycuatro = params.cuarentaycuatro;
+        homework.cuarentaycinco = params.cuarentaycinco;
+        homework.cuarentayseis = params.cuarentayseis;
+        homework.cuarentaysiete = params.cuarentaysiete;
         homework.user_id = request.user.sub;
         homework.save((error, homeworkStored) => {
 
