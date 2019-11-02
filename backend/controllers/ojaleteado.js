@@ -9,11 +9,10 @@ function saveOjaleteado(request, response){
 	var ojaleteado = new Ojaleteado();
 	var params = request.body;
 
-	if (params.name) {
+	if (params.registros) {
 		ojaleteado.operator = params.operator;
-		ojaleteado.name = params.name;
-		ojaleteado.size = params.ojaleteado;
-		ojaleteado.reference = params.reference;
+        ojaleteado.date = params.date;
+        ojaleteado.registros = params.registros;        
 		ojaleteado.user_id = request.user.sub;
 
 		ojaleteado.save((error, ojaleteadoStored) => {

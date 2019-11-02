@@ -94,8 +94,95 @@ function getGuarnecidas(request, response) {
     });
 }
 
+
+function deleteGuarnecida(request, response) {
+    var guarnecidaId = request.params.id;
+
+    GuarnecidaInterna.findByIdAndRemove(guarnecidaId, (error, guarnecidaRemoved) => {
+        if (error) {
+            response.status(500).send({
+                message: 'Error en la peticion'
+            });
+        } else {
+            if (!guarnecidaRemoved) {
+                response.status(404).send({
+                    message: 'La tarea no existe'
+                });
+            } else {
+                response.status(200).send({
+                    guarnecida: guarnecidaRemoved
+                });
+            }
+        }
+
+    });
+}
+
+function updateGuarnecida(request, response) {
+
+    var gaurnecidaId = request.params.id;
+    var war = request.params;
+    var update = request.body._id;
+    var codigo = request.body.code;
+    var idWarehouse = request.body.id;
+
+
+    GuarnecidaInterna.findByIdAndUpdate(update, { "$pull": { "registros": { "code": codigo } } }, { safe: true, multi: true }, (err, gaurnecida) => {
+
+        if (err) {
+            return response.status(500).json({
+                ok: false,
+                mensaje: 'Error al buscar usuario',
+                errors: err
+            });
+        } else {
+            if (!gaurnecida) {
+                return response.status(404).json({
+                    ok: false,
+                    mensaje: "el codigo no existe"
+                });
+            } else {
+
+                response.status(200).json({
+                    ok: true,
+                    guarnecida: gaurnecida
+                });
+            }
+        }
+
+    });
+
+}
+
+
+function updateCanasta(request, response) {
+    var canastaId = request.params.id;
+    var update = request.body;
+
+    GuarnecidaInterna.findByIdAndUpdate(canastaId, update, { new: true }, (error, canastaUpdated) => {
+        if (error) {
+            response.status(500).send({
+                message: 'Error en la peticion'
+            });
+        } else {
+            if (!canastaUpdated) {
+                response.status(404).send({
+                    message: 'No se ha actualizado la tarea'
+                });
+            } else {
+                response.status(200).send({
+                    canasta: canastaUpdated
+                })
+            }
+        }
+    });
+}
+
 module.exports = {
     saveGuarnecidaInterna,
     deleteItemGuarnecida,
-    getGuarnecidas
+    getGuarnecidas,
+    deleteGuarnecida,
+    updateGuarnecida,
+    updateCanasta
 }

@@ -16,7 +16,7 @@ var Warehouse1Schema = Schema({
 
 
     date: { type: Date, default: Date.now() },
-    clasification: String,
+    clasification: {type: String},
     registros: { type: Array },
     user_id: { type: Schema.ObjectId, ref: 'User' }
 

@@ -142,10 +142,72 @@ function updateWarehouses1(request, response) {
 }
 
 
+function updateReference(request, response) {
+
+    var warehouse1Id = request.params.id;
+    var war = request.params;
+    var update = request.body._id;
+    var codigo = request.body.code;
+    var idWarehouse = request.body.id;
+
+
+    Warehouse1.findByIdAndUpdate(update, { "$set": { "registros": { "code": codigo } } },  { safe: true, multi: true }, (err, warehouse1) => {
+
+        if (err) {
+            return response.status(500).json({
+                ok: false,
+                mensaje: 'Error al buscar usuario',
+                errors: err
+            });
+        } else {
+            if (!warehouse1) {
+                return response.status(404).json({
+                    ok: false,
+                    mensaje: "el codigo no existe"
+                });
+            } else {
+
+                response.status(200).json({
+                    ok: true,
+                    warehouse: warehouse1
+                });
+            }
+        }
+
+    });
+
+}
+
+
+
+
 function deleteWarehouse(request, response) {
     var warehouse1Id = request.params.id;
 
     Warehouse1.findByIdAndRemove(warehouse1Id, (error, warehouse1Removed) => {
+        if (error) {
+            response.status(500).send({
+                message: 'Error en la peticion'
+            });
+        } else {
+            if (!warehouse1Removed) {
+                response.status(404).send({
+                    message: 'La tarea no existe'
+                });
+            } else {
+                response.status(200).send({
+                    warehouse1: warehouse1Removed
+                });
+            }
+        }
+
+    });
+}
+
+function deleteVacias(request, response) {
+    var warehouse1Id = request.params.id;
+
+    Warehouse1.remove((error, warehouse1Removed) => {
         if (error) {
             response.status(500).send({
                 message: 'Error en la peticion'
@@ -171,5 +233,8 @@ module.exports = {
     getWarehouses1,
     getWarehouse1,
     updateWarehouses1,
-    deleteWarehouse
+    deleteWarehouse,
+    updateReference,
+    deleteVacias
+    
 };

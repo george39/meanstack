@@ -17,7 +17,10 @@ api.post('/warehouse1', md_auth.ensureAuth, Warehouse1Controller.saveWarehouse1)
 api.post('/add-register', [md_auth.ensureAuth, md_register.Almacen1], Warehouse1Controller.saveWarehouse1);
 api.get('/getwarehouses1', Warehouse1Controller.getWarehouses1);
 api.put('/updatewarehouse1', Warehouse1Controller.updateWarehouses1);
+api.put('/updatereference', Warehouse1Controller.updateReference);
 api.delete('/deletewarehouse1/:id', Warehouse1Controller.deleteWarehouse);
+api.delete('/deletevacias', Warehouse1Controller.deleteVacias);
+
 
 
 
