@@ -7,5 +7,8 @@ var api = express.Router();
 var md_auth = require('../middlewares/authenticated');
 
 api.post('/ojaleteado', md_auth.ensureAuth, OjaleteadoController.saveOjaleteado);
+api.get('/getojaleteado', md_auth.ensureAuth, OjaleteadoController.getOjaleteado);
+api.put('/delete-item-ojaleteado', md_auth.ensureAuth, OjaleteadoController.updateOjaleteado);
+api.delete('/deleteojaleteado', md_auth.ensureAuth, OjaleteadoController.deleteOjaleteado);
 
 module.exports = api;

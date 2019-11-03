@@ -3,12 +3,26 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var ReprocesoCJSchema = Schema ({
-	name: String,
-	reference: String,
-	size: String,
-	date: {type: Date, default: Date.now()},
-	homework_id: { type: Schema.ObjectId, ref: 'Homework'},
-});
+var autoIncrement = require('mongoose-auto-increment');
 
-module.exports = mongoose.model('Reproceso.carlos.julio', ReprocesoCJSchema);
+var AutoIncrement = require('mongoose-sequence')(mongoose);
+var Sequelize = require('sequelize');
+
+
+var con = mongoose.createConnection('mongodb://localhost/alpaca');
+autoIncrement.initialize(con);
+
+var ReprocesoSchema = Schema({
+
+
+    date: { type: Date, default: Date.now() },
+    operator: String,
+    clasification: {type: String},
+    registros: { type: Array },
+    user_id: { type: Schema.ObjectId, ref: 'User' }
+
+});
+ReprocesoSchema.plugin(autoIncrement.plugin, 'Reproceso');
+
+
+module.exports = mongoose.model('Reproceso', ReprocesoSchema);
