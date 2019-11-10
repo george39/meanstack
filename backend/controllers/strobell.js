@@ -148,7 +148,7 @@ function getStrobell(request, response) {
  function deleteStrobell(request, response) {
 	 var strobellId = request.params.id;
  
-	 Injection.findByIdAndRemove(strobellId, (error, strobellRemoved) => {
+	 Strobell.findByIdAndRemove(strobellId, (error, strobellRemoved) => {
 		 if (error) {
 			 response.status(500).send({
 				 message: 'Error en la peticion'
@@ -171,7 +171,7 @@ function getStrobell(request, response) {
 
 module.exports = {
 	saveStrobell,
-	getStrobell,
+	getStrobell,	
 	updateReference,
 	updateStrobell,
 	deleteStrobell

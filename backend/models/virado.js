@@ -3,15 +3,26 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var ViradoSchema = Schema ({
-	operator: String,
-	name: String,
-	size: String,
-	quantity: String,
-	reference: String,
-	date: {type: Date, default: Date.now()},
-	homework: { type: Schema.ObjectId, ref: 'Homework'},
-	user_id: { type: Schema.ObjectId, ref: 'User'}
+var autoIncrement = require('mongoose-auto-increment');
+
+var AutoIncrement = require('mongoose-sequence')(mongoose);
+var Sequelize = require('sequelize');
+
+
+var con = mongoose.createConnection('mongodb://localhost/alpaca');
+autoIncrement.initialize(con);
+
+var ViradoSchema = Schema({
+
+
+    date: { type: Date, default: Date.now() },
+    operator: String,
+    clasification: {type: String},
+    registros: { type: Array },
+    user_id: { type: Schema.ObjectId, ref: 'User' }
+
 });
+ViradoSchema.plugin(autoIncrement.plugin, 'Virado');
+
 
 module.exports = mongoose.model('Virado', ViradoSchema);

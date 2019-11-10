@@ -42,13 +42,13 @@ function saveInjection1(request, response){
 
 
 function getInjection1(request, response) {
-   Injection.find({}).populate({ path: 'user_id' }).exec((error, inyeccion1) => {
+   Injection.find({}).populate({ path: 'user_id' }).exec((error, injection) => {
         if (error) {
             response.status(500).send({
                 message: 'Error en la peticion'
             });
         } else {
-            if (!inyeccion1) {
+            if (!injection) {
                 response.status(404).send({
                     message: 'No hay tareas'
                 });
@@ -57,7 +57,7 @@ function getInjection1(request, response) {
 
 
                 response.status(200).send({
-                    inyeccion1
+                    injection
                 });
 
 

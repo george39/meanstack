@@ -43,19 +43,19 @@ function saveGuarnecidaExterna(request, response){
 
 
 function getGuarnecidas(request, response) {
-    GuarnecidaExterna.find({}).populate({ path: 'user_id' }).exec((error, guarnecida) => {
+    GuarnecidaExterna.find({}).populate({ path: 'user_id' }).exec((error, guarnecidaExterna) => {
         if (error) {
             response.status(500).send({
                 message: 'Error en la peticion'
             });
         } else {
-            if (!guarnecida) {
+            if (!guarnecidaExterna) {
                 response.stutus(404).send({
                     message: 'No hay tareas'
                 });
             } else {
                 response.status(200).send({
-                    guarnecida
+                    guarnecidaExterna
                 });
 
             }

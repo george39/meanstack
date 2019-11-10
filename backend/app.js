@@ -32,6 +32,7 @@ var operator = require('./routes/operator');
 
 
 
+
 //middlewares de body-parser
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -66,6 +67,7 @@ app.use('/', troquelado_routes);
 app.use('/', virado_routes);
 app.use('/', vulcanizado_routes);
 app.use('/', operator);
+
 
 app.use('/busqueda', busqueda);
 app.use('/', tareaUnidad);

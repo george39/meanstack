@@ -12,7 +12,7 @@ var Sequelize = require('sequelize');
 var con = mongoose.createConnection('mongodb://localhost/alpaca');
 autoIncrement.initialize(con);
 
-var GuarnecidaSchema = Schema({
+var GuarnecidaExternaSchema = Schema({
 
 
     date: { type: Date, default: Date.now() },
@@ -22,7 +22,7 @@ var GuarnecidaSchema = Schema({
     user_id: { type: Schema.ObjectId, ref: 'User' }
 
 });
-GuarnecidaSchema.plugin(autoIncrement.plugin, 'Guarnecidaexterna');
+GuarnecidaExternaSchema.plugin(autoIncrement.plugin, 'GuarnecidaExterna');
 
 
-module.exports = mongoose.model('Guarnecidaexterna', GuarnecidaSchema);
+module.exports = mongoose.model('GuarnecidaExterna', GuarnecidaExternaSchema);
