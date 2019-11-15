@@ -182,6 +182,26 @@ function getAlmacen1(request, response) {
 
 }
 
+//Metodo para listar los usuarios con role user
+function getAlmacen2(request, response) {
+    User.find({ role: 'ROLE_ALMACEN2' }).exec((error, users) => {
+        if (error) {
+            response.status(500).send({
+                message: 'Error en la peticion'
+            });
+        } else {
+            if (!users) {
+                response.status(404).send({
+                    message: 'No hay administradores'
+                });
+            } else {
+                response.status(200).send({ users });
+            }
+        }
+    });
+
+}
+
 
 module.exports = {
     pruebas,
@@ -189,5 +209,6 @@ module.exports = {
     login,
     updateUser,
     getAdmins,
-    getAlmacen1
+    getAlmacen1,
+    getAlmacen2
 };
