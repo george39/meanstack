@@ -27,6 +27,7 @@ var vulcanizado_routes = require('./routes/vulcanizado');
 var busqueda = require('./routes/busqueda');
 var tareaUnidad = require('./routes/tareaUnidad');
 var operator = require('./routes/operator');
+var vale_termination = require('./routes/vale.termination');
 
 
 
@@ -67,6 +68,7 @@ app.use('/', troquelado_routes);
 app.use('/', virado_routes);
 app.use('/', vulcanizado_routes);
 app.use('/', operator);
+app.use('/', vale_termination);
 
 
 app.use('/busqueda', busqueda);

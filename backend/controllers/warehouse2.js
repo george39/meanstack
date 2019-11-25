@@ -112,6 +112,7 @@ function updateWarehouses2(request, response) {
     var update = request.body._id;
     var codigo = request.body.code;
     var idWarehouse = request.body.id;
+    
 
 
     Warehouse2.findByIdAndUpdate(update, { "$pull": { "registros": { "code": codigo } } }, { safe: true, multi: true }, (err, warehouse2) => {
@@ -142,16 +143,16 @@ function updateWarehouses2(request, response) {
 }
 
 
-function updateReference(request, response) {
+function updateReferenceWarehouse2(request, response) {
 
     var warehouse2Id = request.params.id;
     var war = request.params;
-    var update = request.body._id;
-    var codigo = request.body.code;
+    var update = request.body._id;    
+    var registrosupdate = request.body;    
     var idWarehouse = request.body.id;
 
 
-    Warehouse2.findByIdAndUpdate(update, { "$set": { "registros": { "code": codigo } } },  { safe: true, multi: true }, (err, warehouse2) => {
+    Warehouse2.findByIdAndUpdate(update, { "$set": { "registros": registrosupdate} }, { safe: true, multi: true, new: true }, (err, warehouse2) => {
 
         if (err) {
             return response.status(500).json({
@@ -213,7 +214,7 @@ module.exports = {
     getWarehouse2,
     updateWarehouses2,
     deleteWarehouse2,
-    updateReference,
+    updateReferenceWarehouse2,
     
     
 };

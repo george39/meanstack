@@ -3,37 +3,37 @@
 var fs = require('fs');
 var path = require('path');
 
-var Terminacion = require('../models/terminacion');
+var ValeTerminacion = require('../models/vale.terminado');
 
-function saveTerminacion(request, response) {
-    var termination = new Terminacion();
+function saveValeTerminacion(request, response) {
+    var valeTermination = new ValeTerminacion();
     var params = request.body;
     var rg = params.registros;
 
     if (params.registros) {
 
 
-        termination.operator = params.operator;
-        termination.date = params.date;
-        termination.clasification = params.clasification;
-        termination.registros = params.registros;
+        valeTermination.operator = params.operator;
+        valeTermination.date = params.date;
+        valeTermination.clasification = params.clasification;
+        valeTermination.registros = params.registros;
         // termination.user_id = request.user.sub;
 
 
 
-        termination.save((error, terminationStored) => {
+        valeTermination.save((error, valeTerminationStored) => {
             if (error) {
                 response.status(500).send({
                     message: 'Error en el servidor'
                 });
             } else {
-                if (!terminationStored) {
+                if (!valeTerminationStored) {
                     response.status(404).send({
                         message: 'No se ha podido crear el registro'
                     });
                 } else {
                     response.status(200).send({
-                        Terminacion: terminationStored
+                        valeTerminacion: valeTerminationStored
                     });
                 }
             }
@@ -49,14 +49,14 @@ function saveTerminacion(request, response) {
 }
 
 
-function getTermination(request, response) {
-	Terminacion.find({}).populate({ path: 'user_id' }).exec((error, termination) => {
+function getValesTerminations(request, response) {
+	ValeTerminacion.find({}).populate({ path: 'user_id' }).exec((error, valeTermination) => {
 		 if (error) {
 			 response.status(500).send({
 				 message: 'Error en la peticion'
 			 });
 		 } else {
-			 if (!termination) {
+			 if (!valeTermination) {
 				 response.status(404).send({
 					 message: 'No hay tareas'
 				 });
@@ -65,7 +65,7 @@ function getTermination(request, response) {
  
  
 				 response.status(200).send({
-					 termination
+					 valeTermination
 				 });
  
  
@@ -75,20 +75,42 @@ function getTermination(request, response) {
 		 }
 	 });
  }
+
+ function getValeTermination(request, response) {
+    var valeTerminationId = request.params.id;
+
+    ValeTerminacion.findById(valeTerminationId).populate({ path: 'user_id' }).exec((error, valeTermination) => {
+        if (error) {
+            response.status(500).send({
+                message: 'Error en la peticion'
+            });
+        } else {
+            if (!valeTermination) {
+                response.status(404).send({
+                    message: 'La tarea no existe'
+                });
+            } else {
+                response.status(200).send({
+                    valeTermination
+                });
+            }
+        }
+    });
+}
  
  
  
  
- function updateTermination(request, response) {
+ function updateValeTermination(request, response) {
  
-	 var terminationId = request.params.id;
+	 var valeTerminationId = request.params.id;
 	 var war = request.params;
 	 var update = request.body._id;
 	 var codigo = request.body.code;
 	 var idWarehouse = request.body.id;
  
  
-	 Terminacion.findByIdAndUpdate(update, { "$pull": { "registros": { "code": codigo } } }, { safe: true, multi: true }, (err, termination) => {
+	 ValeTerminacion.findByIdAndUpdate(update, { "$pull": { "registros": { "code": codigo } } }, { safe: true, multi: true }, (err, valeTermination) => {
  
 		 if (err) {
 			 return response.status(500).json({
@@ -97,7 +119,7 @@ function getTermination(request, response) {
 				 errors: err
 			 });
 		 } else {
-			 if (!termination) {
+			 if (!valeTermination) {
 				 return response.status(404).json({
 					 ok: false,
 					 mensaje: "el codigo no existe"
@@ -106,7 +128,7 @@ function getTermination(request, response) {
  
 				 response.status(200).json({
 					 ok: true,
-					 warehouse: termination
+					 warehouse: valeTermination
 				 });
 			 }
 		 }
@@ -118,14 +140,14 @@ function getTermination(request, response) {
  
  function updateReference(request, response) {
  
-	 var terminationId = request.params.id;
+	 var valeTerminationId = request.params.id;
 	 var war = request.params;
 	 var update = request.body._id;
 	 var codigo = request.body.code;
 	 var idWarehouse = request.body.id;
  
  
-	 Terminacion.findByIdAndUpdate(update, { "$set": { "registros": { "code": codigo } } },  { safe: true, multi: true }, (err, termination) => {
+	 ValeTerminacion.findByIdAndUpdate(update, { "$set": { "registros": { "code": codigo } } },  { safe: true, multi: true }, (err, valeTermination) => {
  
 		 if (err) {
 			 return response.status(500).json({
@@ -134,7 +156,7 @@ function getTermination(request, response) {
 				 errors: err
 			 });
 		 } else {
-			 if (!termination) {
+			 if (!valeTermination) {
 				 return response.status(404).json({
 					 ok: false,
 					 mensaje: "el codigo no existe"
@@ -143,7 +165,7 @@ function getTermination(request, response) {
  
 				 response.status(200).json({
 					 ok: true,
-					 warehouse: termination
+					 warehouse: valeTermination
 				 });
 			 }
 		 }
@@ -153,22 +175,22 @@ function getTermination(request, response) {
  }
  
  
- function deleteTermination(request, response) {
-	 var terminationId = request.params.id;
+ function deleteValeTermination(request, response) {
+	 var valeTerminationId = request.params.id;
  
-	 Terminacion.findByIdAndRemove(terminationId, (error, terminationRemoved) => {
+	 ValeTerminacion.findByIdAndRemove(valeTerminationId, (error, valeTerminationRemoved) => {
 		 if (error) {
 			 response.status(500).send({
 				 message: 'Error en la peticion'
 			 });
 		 } else {
-			 if (!terminationRemoved) {
+			 if (!valeTerminationRemoved) {
 				 response.status(404).send({
 					 message: 'La tarea no existe'
 				 });
 			 } else {
 				 response.status(200).send({
-					 termination: terminationRemoved
+					 valeTermination: valeTerminationRemoved
 				 });
 			 }
 		 }
@@ -177,9 +199,10 @@ function getTermination(request, response) {
  }
 
 module.exports = {
-    saveTerminacion,
-    getTermination,
-    updateTermination,
+    saveValeTerminacion,
+	getValesTerminations,
+	getValeTermination,
+    updateValeTermination,
     updateReference,
-    deleteTermination
+    deleteValeTermination
 }
