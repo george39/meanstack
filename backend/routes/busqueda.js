@@ -1,3 +1,6 @@
+
+
+
 var express = require('express');
 
 var app = express();
@@ -15,27 +18,41 @@ var GarnecidaExterna = require('../models/guarnecida.externa');
 var GarnecidaInterna = require('../models/guarnecida.interna');
 var Virado = require('../models/virado');
 var ReprocesoCarlosJ = require('../models/reproceso.carlos.julio');
+var TareaUnidad = require('../models/tareaUnidad');
+
 
 app.get('/todo/:busqueda', (req, res, nest) => {
 
+    
     var busqueda = req.params.busqueda;
+    
     var regex = new RegExp(busqueda, 'i');
 
     Promise.all([
-            buscarWarehouse1(busqueda, regex),
-            buscarWarehouse2(busqueda, regex),
-            buscarInjection1(busqueda, regex),
-            buscarInjection2(busqueda, regex),
-            buscarCementado(busqueda, regex)
+        
+        buscarTareaUnidad(busqueda, regex),
+        buscarGuarnecidaInterna(busqueda, regex.registros),
+        buscarGuarnecidaExterna(busqueda, regex.registros),
+        buscarWarehouse1(busqueda, regex.registros),
+        buscarOjaleteado(busqueda, regex.registros),
+        buscarStrobell(busqueda, regex.registros),
+        buscarInjection1(busqueda, regex.registros),
+        buscarWarehouse2(busqueda, regex.registros),
+        buscarTerminado(busqueda, regex.registros),
         ])
         .then(respuestas => {
             res.status(200).json({
                 ok: true,
-                warehouse1: respuestas[0],
-                warehouse2: respuestas[1],
-                injection1: respuestas[2],
-                injection2: respuestas[3],
-                cementado: respuestas[4],
+                
+                tareaUnidad: respuestas[0],
+                guarnecidaInterna: respuestas[1],
+                guarnecidaExterna: respuestas[2],
+                warehouse1: respuestas[3],
+                ojaleteado: respuestas[4],
+                strobell: respuestas[5],
+                injection1: respuestas[6],
+                warehouse2: respuestas[7],                
+                terminado: respuestas[8],
             });
 
         });
@@ -47,16 +64,102 @@ app.get('/todo/:busqueda', (req, res, nest) => {
 // ================================================
 
 
+function buscarGuarnecidaInterna(busqueda, regex) {
+    return new Promise((resolve, reject) => {
+       
+        GarnecidaInterna.find({ reference: regex },  (err, guarnecidaInterna) => {
+            if (err) {
+                reject('Error al cargar wahehouse1', err);
+            } else {
+                resolve(guarnecidaInterna)
+            }
+        });
+    });
+}
+
+
+function buscarGuarnecidaExterna(busqueda, regex) {
+    return new Promise((resolve, reject) => {
+       
+        GarnecidaExterna.find({ reference: regex },  (err, guarnecidaExterna) => {
+            if (err) {
+                reject('Error al cargar wahehouse1', err);
+            } else {
+                resolve(guarnecidaExterna)
+            }
+        });
+    });
+}
+
+
+function buscarTroquelado(busqueda, regex) {
+    return new Promise((resolve, reject) => {
+       
+        Troquelado.find({ reference: regex },  (err, troquelado) => {
+            if (err) {
+                reject('Error al cargar wahehouse1', err);
+            } else {
+                resolve(troquelado)
+            }
+        });
+    });
+}
+
+
+function buscarStrobell(busqueda, regex) {
+    return new Promise((resolve, reject) => {
+       
+        Strobell.find({ reference: regex },  (err, strobell) => {
+            if (err) {
+                reject('Error al cargar wahehouse1', err);
+            } else {
+                resolve(strobell)
+            }
+        });
+    });
+}
+
+
+function buscarOjaleteado(busqueda, regex) {
+    return new Promise((resolve, reject) => {
+       
+        Ojaleteado.find({ reference: regex },  (err, ojaleteado) => {
+            if (err) {
+                reject('Error al cargar wahehouse1', err);
+            } else {
+                resolve(ojaleteado)
+            }
+        });
+    });
+}
+
+
+function buscarTareaUnidad(busqueda, regex) {
+    
+    return new Promise((resolve, reject) => {
+       
+        TareaUnidad.find({ reference: regex }, (err, tareaUnidad) => {
+            if (err) {
+                reject('Error al cargar wahehouse1', err);
+            } else {
+                resolve(tareaUnidad)
+            }
+        });
+    });
+}
+
 function buscarWarehouse1(busqueda, regex) {
     return new Promise((resolve, reject) => {
-        Warehouse1.find({ name: regex }, (err, warehouse1) => {
+
+        Warehouse1.find({ reference: regex }, (err, warehouse1) => {            
+
             if (err) {
                 reject('Error al cargar wahehouse1', err);
             } else {
                 resolve(warehouse1)
             }
         });
-    });
+    });       
 }
 
 function buscarWarehouse2(busqueda, regex) {
@@ -71,6 +174,20 @@ function buscarWarehouse2(busqueda, regex) {
     });
 }
 
+
+function buscarTerminado(busqueda, regex) {
+    return new Promise((resolve, reject) => {
+        Terminacion.find({ name: regex }, (err, terminado) => {
+            if (err) {
+                reject('Error al cargar Injeccion2', err);
+            } else {
+                resolve(terminado)
+            }
+        });
+    });
+}
+
+
 function buscarInjection1(busqueda, regex) {
     return new Promise((resolve, reject) => {
         Injection1.find({ name: regex }, (err, injection1) => {
@@ -84,29 +201,21 @@ function buscarInjection1(busqueda, regex) {
 }
 
 
-function buscarInjection2(busqueda, regex) {
+function buscarReproceso(busqueda, regex) {
     return new Promise((resolve, reject) => {
-        Injection2.find({ name: regex }, (err, injection2) => {
+        ReprocesoCarlosJ.find({ name: regex }, (err, reproceso) => {
             if (err) {
-                reject('Error al cargar Injeccion2', err);
+                reject('Error al cargar Injeccion1', err);
             } else {
-                resolve(injection2)
+                resolve(reproceso)
             }
         });
     });
 }
 
-function buscarCementado(busqueda, regex) {
-    return new Promise((resolve, reject) => {
-        Cementado.find({ name: regex }, (err, cementado) => {
-            if (err) {
-                reject('Error al cargar Cementado', err);
-            } else {
-                resolve(cementado)
-            }
-        });
-    });
-}
+
+
+
 
 
 

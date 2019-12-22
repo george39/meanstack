@@ -7,11 +7,25 @@ var path = require('path');
 var Warehouse1 = require('../models/references');
 var Reference = require('../models/references');
 
-function pruebas(request, response){
-	response.status(200).send({
-		message: 'Probando el controlador de referencias',
-		user: request.user
-	});
+function getReferences(request, response) {
+    Reference.find({}).populate({ path: 'user_id' }).exec((error, reference) => {
+        if (error) {
+            response.status(500).send({
+                message: 'Error en la peticion'
+            });
+        } else {
+            if (!reference) {
+                response.stutus(404).send({
+                    message: 'No hay tareas'
+                });
+            } else {
+                response.status(200).send({
+                    reference
+                });
+
+            }
+        }
+    });
 }
 
 function saveReference(request, response){
@@ -49,6 +63,6 @@ function saveReference(request, response){
 	
 
 module.exports = {
-	pruebas,
+	getReferences,
 	saveReference
 };

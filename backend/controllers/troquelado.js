@@ -41,6 +41,28 @@ function saveTroquelado(request, response) {
     }
 }
 
+
+function getTroquelados(request, response) {
+    Troquelado.find({}).populate({ path: 'user_id' }).exec((error, troquelado) => {
+        if (error) {
+            response.status(500).send({
+                message: 'Error en la peticion'
+            });
+        } else {
+            if (!troquelado) {
+                response.stutus(404).send({
+                    message: 'No hay tareas'
+                });
+            } else {
+                response.status(200).send({
+                    troquelado
+                });
+
+            }
+        }
+    });
+}
+
 function deleteTroquelado(request, response) {
     var troqueladoId = request.params.id;
 
@@ -66,5 +88,6 @@ function deleteTroquelado(request, response) {
 
 module.exports = {
     saveTroquelado,
-    deleteTroquelado
+    deleteTroquelado,
+    getTroquelados
 }

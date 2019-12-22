@@ -18,6 +18,7 @@ function saveTareaUnidad(request, response) {
         tareau.reference = params.reference;
         tareau.size = params.size;        
         tareau.code = params.code;
+        tareau.quantity = 0.5;
         tareau.user_id = request.user.sub;
 
         tareau.save((error, tareauStored) => {

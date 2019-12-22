@@ -74,19 +74,19 @@ function deleteItemGuarnecida(request, response) {
 }
 
 function getGuarnecidas(request, response) {
-    GuarnecidaInterna.find({}).populate({ path: 'user_id' }).exec((error, guarnecida) => {
+    GuarnecidaInterna.find({}).populate({ path: 'user_id' }).exec((error, guarnecidaInterna) => {
         if (error) {
             response.status(500).send({
                 message: 'Error en la peticion'
             });
         } else {
-            if (!guarnecida) {
+            if (!guarnecidaInterna) {
                 response.stutus(404).send({
                     message: 'No hay tareas'
                 });
             } else {
                 response.status(200).send({
-                    guarnecida
+                    guarnecidaInterna
                 });
 
             }
