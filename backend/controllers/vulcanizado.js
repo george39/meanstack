@@ -6,19 +6,18 @@ var path = require('path');
 var Vulcanizado = require('../models/vulcanizado');
 
 function saveVulcanizado(request, response){
-	var vulcanizado= new Vulcanizado();
+	var vulcanizado = Vulcanizado();
 	var params = request.body;
 
-	if (params.name) {
+	if (params.registros) {
 		vulcanizado.operator = params.operator;
-		vulcanizado.name = params.name;
-		vulcanizado.size = params.size;
-		vulcanizado.reference = params.reference;
-		vulcanizado.user_id = request.user.sub;
+		vulcanizado.date = params.date;
+		vulcanizado.registros = params.registros;
 
 		vulcanizado.save((error, vulcanizadoStored) => {
 			if (error) {
 				response.status(500).send({
+
 					message: 'Error en el servidor'
 				});
 			}else{
@@ -30,7 +29,7 @@ function saveVulcanizado(request, response){
 					response.status(200).send({
 						vulcanizado: vulcanizadoStored
 					});
-				}				
+				}
 			}
 		});
 	}else{
@@ -40,7 +39,138 @@ function saveVulcanizado(request, response){
 	}
 }
 
+function getVulcanizado(request, response) {
+    Vulcanizado.find({}).populate({ path: 'user_id' }).exec((error, vulcanizado) => {
+        if (error) {
+            response.status(500).send({
+                message: 'Error en la peticion'
+            });
+        } else {
+            if (!vulcanizado) {
+                response.status(404).send({
+                    message: 'No hay tareas'
+                });
+            } else {
+
+
+
+                response.status(200).send({
+                    vulcanizado
+                });
+
+
+
+
+            }
+        }
+    });
+}
+ 
+ 
+ 
+ 
+ function updateVulcanizado(request, response) {
+ 
+	 var vulcanizadoId = request.params.id;
+	 var war = request.params;
+	 var update = request.body._id;
+	 var codigo = request.body.code;
+	 var idWarehouse = request.body.id;
+ 
+ 
+	 Vulcanizado.findByIdAndUpdate(update, { "$pull": { "registros": { "code": codigo } } }, { safe: true, multi: true }, (err, vulcanizado) => {
+ 
+		 if (err) {
+			 return response.status(500).json({
+				 ok: false,
+				 mensaje: 'Error al buscar usuario',
+				 errors: err
+			 });
+		 } else {
+			 if (!vulcanizado) {
+				 return response.status(404).json({
+					 ok: false,
+					 mensaje: "el codigo no existe"
+				 });
+			 } else {
+ 
+				 response.status(200).json({
+					 ok: true,
+					 vulcanizado: vulcanizado
+				 });
+			 }
+		 }
+ 
+	 });
+ 
+ }
+ 
+ 
+ function updateReference(request, response) {
+ 
+	 var vulcanizadoId = request.params.id;
+	 var war = request.params;
+	 var update = request.body._id;
+	 var codigo = request.body.code;
+	 var idWarehouse = request.body.id;
+ 
+ 
+	 Vulcanizado.findByIdAndUpdate(update, { "$set": { "registros": { "code": codigo } } },  { safe: true, multi: true }, (err, vulcanizado) => {
+ 
+		 if (err) {
+			 return response.status(500).json({
+				 ok: false,
+				 mensaje: 'Error al buscar usuario',
+				 errors: err
+			 });
+		 } else {
+			 if (!vulcanizado) {
+				 return response.status(404).json({
+					 ok: false,
+					 mensaje: "el codigo no existe"
+				 });
+			 } else {
+ 
+				 response.status(200).json({
+					 ok: true,
+					 vulcanizado: vulcanizado
+				 });
+			 }
+		 }
+ 
+	 });
+ 
+ }
+ 
+ 
+ function deleteVulcanizado(request, response) {
+	 var vulcanizadoId = request.params.id;
+ 
+	 Vulcanizado.findByIdAndRemove(vulcanizadoId, (error, vulcanizadoRemoved) => {
+		 if (error) {
+			 response.status(500).send({
+				 message: 'Error en la peticion'
+			 });
+		 } else {
+			 if (!vulcanizadoRemoved) {
+				 response.status(404).send({
+					 message: 'La tarea no existe'
+				 });
+			 } else {
+				 response.status(200).send({
+					 vulcanizado: vulcanizadoRemoved
+				 });
+			 }
+		 }
+ 
+	 });
+ }
+
 
 module.exports = {
-	saveVulcanizado
+	saveVulcanizado,
+	getVulcanizado,
+	updateVulcanizado,
+	deleteVulcanizado,
+	updateReference
 }

@@ -39,6 +39,8 @@ app.get('/todo/:busqueda', (req, res, nest) => {
         buscarInjection1(busqueda, regex.registros),
         buscarWarehouse2(busqueda, regex.registros),
         buscarTerminado(busqueda, regex.registros),
+        buscarReproceso(busqueda, regex.registros),
+        buscarVulcanizado(busqueda, regex.registros)
         ])
         .then(respuestas => {
             res.status(200).json({
@@ -52,7 +54,9 @@ app.get('/todo/:busqueda', (req, res, nest) => {
                 strobell: respuestas[5],
                 injection1: respuestas[6],
                 warehouse2: respuestas[7],                
-                terminado: respuestas[8],
+                termination: respuestas[8],
+                reproceso: respuestas[9],
+                vulcanizado: respuestas[10]
             });
 
         });
@@ -164,7 +168,7 @@ function buscarWarehouse1(busqueda, regex) {
 
 function buscarWarehouse2(busqueda, regex) {
     return new Promise((resolve, reject) => {
-        Warehouse2.find({ name: regex }, (err, warehouse2) => {
+        Warehouse2.find({ reference: regex }, (err, warehouse2) => {
             if (err) {
                 reject('Error al cargar wahehouse2', err);
             } else {
@@ -177,11 +181,11 @@ function buscarWarehouse2(busqueda, regex) {
 
 function buscarTerminado(busqueda, regex) {
     return new Promise((resolve, reject) => {
-        Terminacion.find({ name: regex }, (err, terminado) => {
+        Terminacion.find({ reference: regex }, (err, termination) => {
             if (err) {
                 reject('Error al cargar Injeccion2', err);
             } else {
-                resolve(terminado)
+                resolve(termination)
             }
         });
     });
@@ -190,7 +194,7 @@ function buscarTerminado(busqueda, regex) {
 
 function buscarInjection1(busqueda, regex) {
     return new Promise((resolve, reject) => {
-        Injection1.find({ name: regex }, (err, injection1) => {
+        Injection1.find({ reference: regex }, (err, injection1) => {
             if (err) {
                 reject('Error al cargar Injeccion1', err);
             } else {
@@ -203,11 +207,23 @@ function buscarInjection1(busqueda, regex) {
 
 function buscarReproceso(busqueda, regex) {
     return new Promise((resolve, reject) => {
-        ReprocesoCarlosJ.find({ name: regex }, (err, reproceso) => {
+        ReprocesoCarlosJ.find({ reference: regex }, (err, reproceso) => {
             if (err) {
                 reject('Error al cargar Injeccion1', err);
             } else {
                 resolve(reproceso)
+            }
+        });
+    });
+}
+
+function buscarVulcanizado(busqueda, regex) {
+    return new Promise((resolve, reject) => {
+        Vulcanizado.find({ reference: regex }, (err, vulcanizado) => {
+            if (err) {
+                reject('Error al cargar vulcanizado', err);
+            } else {
+                resolve(vulcanizado)
             }
         });
     });
