@@ -13,6 +13,7 @@ function saveTareaUnidad(request, response) {
 
 
     if (params.name) {
+        tareau.tarea_id = params.tarea_id,
         tareau.operator = params.operator;
         tareau.name = params.name;
         tareau.reference = params.reference;
@@ -46,7 +47,7 @@ function saveTareaUnidad(request, response) {
 }
 
 
-function getHomeworkUnit(request, response) {
+function getHomeworksUnit(request, response) {
     TareaUnidad.find({}).populate({ path: 'user_id' }).exec((error, tareaUnidad) => {
         if (error) {
             response.status(500).send({
@@ -62,6 +63,28 @@ function getHomeworkUnit(request, response) {
                     tareaUnidad
                 });
 
+            }
+        }
+    });
+}
+
+function getHomeworkUnit(request, response) {
+    var tareaUnidadId = request.params.id;
+
+    TareaUnidad.findById(tareaUnidadId).populate({ path: 'user_id' }).exec((error, tareaUnidad) => {
+        if (error) {
+            response.status(500).send({
+                message: 'Error en la peticion'
+            });
+        } else {
+            if (!tareaUnidad) {
+                response.status(404).send({
+                    message: 'La tarea no existe'
+                });
+            } else {
+                response.status(200).send({
+                    tareaUnidad
+                });
             }
         }
     });
@@ -95,8 +118,34 @@ function deleteTareaUnidad(request, response) {
     }
 }
 
+
+function updateTareaUnidad(request, response) {
+    var tareaUnidadId = request.params.id;
+    var update = request.body;
+
+    TareaUnidad.findByIdAndUpdate(tareaUnidadId, update, { new: true }, (error, tareaUnidadUpdated) => {
+        if (error) {
+            response.status(500).send({
+                message: 'Error en la peticion'
+            });
+        } else {
+            if (!tareaUnidadUpdated) {
+                response.status(404).send({
+                    message: 'No se ha actualizado la tarea'
+                });
+            } else {
+                response.status(200).send({
+                    tareaUnidad: tareaUnidadUpdated
+                })
+            }
+        }
+    });
+}
+
 module.exports = {
     saveTareaUnidad,
+    getHomeworksUnit,
     getHomeworkUnit,
-    deleteTareaUnidad
+    deleteTareaUnidad,
+    updateTareaUnidad
 }

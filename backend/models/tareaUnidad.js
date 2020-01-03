@@ -4,6 +4,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var TareaUnidadSchema = Schema({
+    tarea_id: String,
     operator: String,
     name: String,
     reference: String,
