@@ -35,6 +35,9 @@ function saveReference(request, response){
 	if (params.name) {
 		reference.name = params.name;
 		reference.code = params.code;
+		reference.forradura = params.forradura;
+		reference.capellada = params.capellada;
+		reference.suela = params.suela;
 		reference.user_id = request.user.sub;
 
 		reference.save((error, referenceStored) => {

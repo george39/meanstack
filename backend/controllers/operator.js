@@ -12,9 +12,12 @@ function saveOperator(request, response) {
     if (params.name) {
 
         operator.name = params.name;
-        operator.lastname = params.lastname;
+        operator.nick = params.nick;
+        operator.password = params.password;
+        operator.role = params.role;
         operator.section = params.section;
         // operator.user_id = request.user.sub;
+        
 
         operator.save((error, operatorStored) => {
             if (error) {
@@ -42,19 +45,19 @@ function saveOperator(request, response) {
 
 
 function getOperators(request, response) {
-    Operator.find({}).populate({ path: 'user_id' }).exec((error, operators) => {
+    Operator.find({}).populate({ path: 'user_id' }).exec((error, operator) => {
         if (error) {
             response.status(500).send({
                 message: 'Error en la peticion'
             });
         } else {
-            if (!operators) {
+            if (!operator) {
                 response.stutus(404).send({
                     message: 'No hay tareas'
                 });
             } else {
                 response.status(200).send({
-                    operators
+                    operator
                 });
 
             }
